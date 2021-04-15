@@ -11,7 +11,7 @@ export interface ITodoData {
   results: TTodoResult[];
 }
 
-export const fetchQuizData = async (): Promise<ITodoData> => {
+export const fetchTodosData = async (): Promise<ITodoData> => {
   const response = await fetch(
     'https://jsonplaceholder.typicode.com/todos',
   );
