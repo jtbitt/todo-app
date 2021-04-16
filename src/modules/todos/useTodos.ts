@@ -1,5 +1,8 @@
 import { useReducer, useEffect } from "react";
 
+import { Todo } from "./interfaces/todo.interface";
+import { filterTodos } from "./utils/filterTodos";
+
 const ACTIONS = {
   filterTodos: "FILTER_TODOS",
   searchTodos: "SEARCH_TODOS"
@@ -10,7 +13,7 @@ const createInitialState = () => ({
   filteredTodos: []
 });
 
-const fetchReducer = (state: any, action: { type: string; payload: any; }) => {
+const todosReducer = (state: any, action: { type: string; payload: any; }) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -19,24 +22,28 @@ const fetchReducer = (state: any, action: { type: string; payload: any; }) => {
     case ACTIONS.filterTodos:
       return { ...state, ...payload, isLoading: false };
     default:
-      throw new Error("Not recognized action type in fetchReducer! Typo?");
+      throw new Error("Not recognized action type in todosReducer! Typo?");
   }
 };
 
-// types
-// 0 = search
-// 1 = filter
-export const useTodos = (filter: string, type: string) => {
+export const useTodos = (todos: Todo[], query: string, type: string) => {
   const [state, dispatch] = useReducer(
-    fetchReducer,
+    todosReducer,
     createInitialState()
   );
 
   useEffect(() => {
-    if (type === 'search') {
-      // search util function
-    } else {
-      // filter util function
+    switch (type) {
+      case 'filter':
+        const filteredTodos = filterTodos(todos, query);
+        return dispatch({
+          type: ACTIONS.filterTodos,
+          payload: { filteredTodos: filteredTodos }
+        });
+      // case ACTIONS.filterTodos:
+      //   return { ...state, ...payload, isLoading: false };
+      default:
+        throw new Error("Not recognized action type in todosReducer! Typo?");
     }
   }, []);
   

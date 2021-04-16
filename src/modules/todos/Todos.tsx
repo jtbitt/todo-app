@@ -1,11 +1,5 @@
 import { useFetch } from "./useFetch";
-
-export interface Todo {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
+import { Todo } from "./interfaces/todo.interface";
 
 export const Todos = () => {
   const { error, isLoading, data } = useFetch(
@@ -28,18 +22,22 @@ export const Todos = () => {
       <input />
       <select></select>
       <table>
-        <tr>
-          <th>#</th>
-          <th>Title</th>
-          <th>Completed</th>
-        </tr>
-        {todos.map(({ title, id, completed }) => (
+        <thead>
           <tr>
-            <td>{id}</td>
-            <td>{title}</td>
-            <td>{completed.toString()}</td>
+            <th>#</th>
+            <th>Title</th>
+            <th>Completed</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {todos.map(({ title, id, completed }) => (
+            <tr key={id}>
+              <td>{id}</td>
+              <td>{title}</td>
+              <td>{completed.toString()}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </>
   );

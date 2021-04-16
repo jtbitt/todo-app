@@ -6,6 +6,12 @@ const ACTIONS = {
   fetchError: "FETCH_ERROR"
 };
 
+export interface FetchState {
+  error: string;
+  isLoading: boolean;
+  data: {}[];
+};
+
 const createInitialState = (initialState: {}) => ({
   error: undefined,
   isLoading: true,
@@ -13,7 +19,7 @@ const createInitialState = (initialState: {}) => ({
   ...initialState
 });
 
-const fetchReducer = (state: any, action: { type: string; payload: any; }) => {
+const fetchReducer = (state: FetchState, action: { type: string; payload: any; }) => {
   const { type, payload } = action;
 
   switch (type) {
