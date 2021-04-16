@@ -13,7 +13,7 @@ const createInitialState = (initialState: {}) => ({
   ...initialState
 });
 
-const fetchReducer = (state: any, action: { type: any; payload: any; }) => {
+const fetchReducer = (state: any, action: { type: string; payload: any; }) => {
   const { type, payload } = action;
 
   switch (type) {

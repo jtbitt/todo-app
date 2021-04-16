@@ -1,6 +1,6 @@
 import { useFetch } from "./useFetch";
 
-export interface Todos {
+export interface Todo {
   userId: number;
   id: number;
   title: string;
@@ -20,7 +20,7 @@ export const Todos = () => {
     return <div>loading...</div>;
   }
 
-  const todos: Todos[] = data;
+  const todos: Todo[] = data;
 
   return (
     <>
