@@ -23,10 +23,24 @@ export const Todos = () => {
   const todos: Todos[] = data;
 
   return (
-    <ul>
-      {todos.map(({ title, id }) => (
-        <li key={id}>{title}</li>
-      ))}
-    </ul>
+    <>
+      <h3>Todos</h3>
+      <input />
+      <select></select>
+      <table>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Completed</th>
+        </tr>
+        {todos.map(({ title, id, completed }) => (
+          <tr>
+            <td>{id}</td>
+            <td>{title}</td>
+            <td>{completed.toString()}</td>
+          </tr>
+        ))}
+      </table>
+    </>
   );
 };
