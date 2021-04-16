@@ -1,27 +1,16 @@
-import { useState, useEffect } from "react";
+import { useFetch } from "./useFetch";
+
+export interface Todos {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
 export const Todos = () => {
-  const [error, setError] = useState(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-  const [todos, setTodos] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/todos"
-        );
-        const data = await response.json();
-
-        setTodos(data);
-      } catch (e) {
-        setError(e.message || "Something went wrong");
-      }
-
-      setIsLoading(false);
-    };
-    fetchData();
-  }, []);
+  const { error, isLoading, data } = useFetch(
+    `https://jsonplaceholder.typicode.com/todos`
+  );
 
   if (error) {
     return <div>{error}</div>;
@@ -30,6 +19,8 @@ export const Todos = () => {
   if (isLoading) {
     return <div>loading...</div>;
   }
+
+  const todos: Todos[] = data;
 
   return (
     <ul>
