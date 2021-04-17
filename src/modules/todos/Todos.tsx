@@ -22,7 +22,11 @@ export const Todos = () => {
     return <div>loading...</div>;
   }
 
-  const handleChange = (e: any) => {
+  const handleSearchChange = (e: any) => {
+    setSearchQuery({ query: e.target.value, type: "search" });
+  };
+
+  const handleFilterChange = (e: any) => {
     setSearchQuery({ query: e.target.value, type: "filter" });
   };
 
@@ -32,9 +36,12 @@ export const Todos = () => {
       <input
         value={searchQuery.query}
         placeholder="Search todos..."
-        onChange={handleChange}
+        onChange={handleSearchChange}
       />
-      <select></select>
+      <select onChange={handleFilterChange}>
+        <option value="true">True</option>
+        <option value="false">False</option>
+      </select>
       <table>
         <thead>
           <tr>

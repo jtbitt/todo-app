@@ -1,6 +1,7 @@
 import { useReducer, useEffect } from "react";
 
 import { Todo } from "./interfaces/todo.interface";
+import { searchTodos } from "./utils/searchTodos";
 import { filterTodos } from "./utils/filterTodos";
 
 const ACTIONS = {
@@ -14,7 +15,7 @@ export interface FetchState {
 };
 
 const createInitialState = () => ({
-  newTodos: []
+  todos: []
 });
 
 const todosReducer = (state: any, action: { type: string; payload: any; }) => {
@@ -32,7 +33,7 @@ const todosReducer = (state: any, action: { type: string; payload: any; }) => {
   }
 };
 
-export const useTodos = (todos: Todo[], query: string, type: string) => {
+export const useTodos = (todos: Todo[], query: any, type: string) => {
   const [state, dispatch] = useReducer(
     todosReducer,
     createInitialState()
@@ -46,14 +47,21 @@ export const useTodos = (todos: Todo[], query: string, type: string) => {
           payload: { todos: todos }
         })
 
+      case "search":
+        const searchedTodos = searchTodos(todos, query);
+        return dispatch({
+          type: ACTIONS.searchTodos,
+          payload: { todos: searchedTodos }
+        });
+
       case "filter":
-        const filteredTodos = filterTodos(todos, query);
+        const cleanQuery = query === "true" ? true : false;
+        const filteredTodos = filterTodos(todos, cleanQuery);
         return dispatch({
           type: ACTIONS.filterTodos,
           payload: { todos: filteredTodos }
         });
-      // case ACTIONS.filterTodos:
-      //   return { ...state, ...payload, isLoading: false };
+
       default:
         return dispatch({
           type: ACTIONS.returnTodos,
