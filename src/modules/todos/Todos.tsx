@@ -1,25 +1,39 @@
+import { useState } from "react";
+
 import { useFetch } from "./useFetch";
+import { useTodos } from "./useTodos";
 import { Todo } from "./interfaces/todo.interface";
 
 export const Todos = () => {
+  const [searchQuery, setSearchQuery] = useState({
+    query: "",
+    type: "",
+  });
   const { error, isLoading, data } = useFetch(
     `https://jsonplaceholder.typicode.com/todos`
   );
+  const { todos } = useTodos(data, searchQuery.query, searchQuery.type);
 
   if (error) {
     return <div>{error}</div>;
   }
 
-  if (isLoading) {
+  if (isLoading || !todos) {
     return <div>loading...</div>;
   }
 
-  const todos: Todo[] = data;
+  const handleChange = (e: any) => {
+    setSearchQuery({ query: e.target.value, type: "filter" });
+  };
 
   return (
     <>
       <h3>Todos</h3>
-      <input />
+      <input
+        value={searchQuery.query}
+        placeholder="Search todos..."
+        onChange={handleChange}
+      />
       <select></select>
       <table>
         <thead>
@@ -30,11 +44,11 @@ export const Todos = () => {
           </tr>
         </thead>
         <tbody>
-          {todos.map(({ title, id, completed }) => (
-            <tr key={id}>
-              <td>{id}</td>
-              <td>{title}</td>
-              <td>{completed.toString()}</td>
+          {todos.map((todo: Todo) => (
+            <tr key={todo.id}>
+              <td>{todo.id}</td>
+              <td>{todo.title}</td>
+              <td>{todo.completed.toString()}</td>
             </tr>
           ))}
         </tbody>
