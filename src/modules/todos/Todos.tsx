@@ -33,12 +33,9 @@ export const Todos = () => {
   return (
     <>
       <h3>Todos</h3>
-      <input
-        value={searchQuery.query}
-        placeholder="Search todos..."
-        onChange={handleSearchChange}
-      />
+      <input placeholder="Search todos..." onChange={handleSearchChange} />
       <select onChange={handleFilterChange}>
+        <option></option>
         <option value="true">True</option>
         <option value="false">False</option>
       </select>

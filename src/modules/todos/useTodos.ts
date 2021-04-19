@@ -3,6 +3,7 @@ import { useReducer, useEffect } from "react";
 import { Todo } from "./interfaces/todo.interface";
 import { searchTodos } from "./utils/searchTodos";
 import { filterTodos } from "./utils/filterTodos";
+import { chunkTodos } from "./utils/chunkTodos";
 
 const ACTIONS = {
   filterTodos: "FILTER_TODOS",
@@ -48,6 +49,7 @@ export const useTodos = (todos: Todo[], query: any, type: string) => {
         })
 
       case "search":
+        chunkTodos(todos);
         const searchedTodos = searchTodos(todos, query);
         return dispatch({
           type: ACTIONS.searchTodos,
