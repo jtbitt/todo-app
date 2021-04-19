@@ -1,9 +1,7 @@
 import { useReducer, useEffect } from "react";
 
 import { Todo } from "./interfaces/todo.interface";
-import { searchTodos } from "./utils/searchTodos";
-import { filterTodos } from "./utils/filterTodos";
-import { chunkTodos } from "./utils/chunkTodos";
+import { chunkTodos, filterTodos, searchTodos } from "./utils";
 
 const ACTIONS = {
   filterTodos: "FILTER_TODOS",
@@ -13,10 +11,12 @@ const ACTIONS = {
 
 export interface FetchState {
   todos: Todo[];
+  totalTodos: number;
 };
 
 const createInitialState = () => ({
-  todos: []
+  todos: [],
+  totalTodos: 0
 });
 
 const todosReducer = (state: any, action: { type: string; payload: any; }) => {
@@ -41,35 +41,34 @@ export const useTodos = (todos: Todo[], query: any, type: string) => {
   );
 
   useEffect(() => {
-    switch (type) {
-      case "":
-        return dispatch({
-          type: ACTIONS.returnTodos,
-          payload: { todos: todos }
-        })
+    if (!todos) {
+      return;
+    }
 
+    switch (type) {
       case "search":
-        chunkTodos(todos);
         const searchedTodos = searchTodos(todos, query);
+
         return dispatch({
           type: ACTIONS.searchTodos,
-          payload: { todos: searchedTodos }
+          payload: { todos: chunkTodos(searchedTodos), totalTodos: searchedTodos.length }
         });
 
       case "filter":
         const cleanQuery = query === "true" ? true : false;
         const filteredTodos = filterTodos(todos, cleanQuery);
+
         return dispatch({
           type: ACTIONS.filterTodos,
-          payload: { todos: filteredTodos }
+          payload: { todos: chunkTodos(filteredTodos), totalTodos: filteredTodos.length }
         });
 
       default:
         return dispatch({
           type: ACTIONS.returnTodos,
-          payload: { todos: [] }
+          payload: { todos: chunkTodos(todos) }
         })
-    }
+      }
   }, [todos, query, type]);
   
   return state;
