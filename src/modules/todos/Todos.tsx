@@ -1,11 +1,14 @@
 import { useState } from "react";
 
+import { DataTable, Paginator } from "../../components";
 import { useFetch } from "./useFetch";
-import { useTodos } from "./useTodos";
+import { useTodos } from "./hooks";
 import { Todo } from "./interfaces/todo.interface";
 
 export const Todos = () => {
-  const [currentPagination, setCurrentPagination] = useState(0);
+  const [paginationIndex, setPaginationIndex] = useState(0);
+  const [pageRange, setPageRange] = useState(0);
+  const [pageTotal, setPageTotal] = useState(0);
   const [searchQuery, setSearchQuery] = useState({
     query: "",
     type: "search",
@@ -18,6 +21,7 @@ export const Todos = () => {
     searchQuery.query,
     searchQuery.type
   );
+  const chunkSize = 20;
 
   if (error) {
     return <h3>{error}</h3>;
@@ -35,10 +39,16 @@ export const Todos = () => {
     setSearchQuery({ query: e.target.value, type: "filter" });
   };
 
-  const handlePagination = (e: any, direction: string) => {
-    direction === "previous"
-      ? setCurrentPagination(currentPagination - 1)
-      : setCurrentPagination(currentPagination + 1);
+  const handlePagination = (direction: string) => {
+    if (direction === "previous") {
+      setPaginationIndex(paginationIndex - 1);
+      setPageRange(pageRange - chunkSize);
+      setPageTotal(pageRange - todos[paginationIndex].length);
+    } else {
+      setPaginationIndex(paginationIndex + 1);
+      setPageRange(pageRange + chunkSize);
+      setPageTotal(pageRange + todos[paginationIndex].length);
+    }
   };
 
   return (
@@ -59,78 +69,15 @@ export const Todos = () => {
           <option value="false">False</option>
         </select>
       </div>
-      <table
-        style={{
-          width: "100%",
-          marginTop: "20px",
-          marginBottom: "20px",
-          border: "1px solid lightgray",
-        }}
-      >
-        <thead>
-          <tr style={{ textAlign: "left" }}>
-            <th
-              style={{
-                width: "5%",
-                padding: "20px 10px",
-                borderBottom: "1px solid lightgray",
-              }}
-            >
-              #
-            </th>
-            <th style={{ width: "80%", borderBottom: "1px solid lightgray" }}>
-              Title
-            </th>
-            <th
-              style={{
-                width: "10%",
-                borderBottom: "1px solid lightgray",
-                paddingRight: "10px",
-              }}
-            >
-              Completed
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {todos[currentPagination].map((todo: Todo) => (
-            <tr key={todo.id}>
-              <td
-                style={{
-                  padding: "20px 10px",
-                  borderBottom: "1px solid lightgray",
-                }}
-              >
-                {todo.id}
-              </td>
-              <td style={{ borderBottom: "1px solid lightgray" }}>
-                {todo.title}
-              </td>
-              <td style={{ borderBottom: "1px solid lightgray" }}>
-                {todo.completed.toString()}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div style={{ display: "flex" }}>
-        <span style={{ marginLeft: "auto", marginRight: "10px" }}>
-          1-20 of {totalTodos}
-        </span>
-        <button
-          disabled={currentPagination === 0}
-          onClick={(e) => handlePagination(e, "previous")}
-          style={{ marginRight: "10px" }}
-        >
-          &larr;
-        </button>
-        <button
-          disabled={currentPagination === todos.length - 1}
-          onClick={(e) => handlePagination(e, "next")}
-        >
-          &rarr;
-        </button>
-      </div>
+      <DataTable data={todos} index={paginationIndex} />
+      <Paginator
+        index={paginationIndex}
+        maxIndex={todos.length - 1}
+        pageRange={pageRange}
+        pageTotal={pageTotal}
+        total={totalTodos}
+        onClick={handlePagination}
+      />
     </div>
   );
 };

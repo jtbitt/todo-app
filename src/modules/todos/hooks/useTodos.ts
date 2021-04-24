@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from "react";
 
-import { Todo } from "./interfaces/todo.interface";
-import { chunkTodos, filterTodos, searchTodos } from "./utils";
+import { Todo } from "../interfaces/todo.interface";
+import { chunkTodos, filterTodos, searchTodos } from "../utils";
 
 const ACTIONS = {
   filterTodos: "FILTER_TODOS",
@@ -9,7 +9,7 @@ const ACTIONS = {
   returnTodos: "RETURN_TODOS"
 };
 
-export interface FetchState {
+export interface TodosState {
   todos: Todo[];
   totalTodos: number;
 };
