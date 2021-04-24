@@ -1,9 +1,8 @@
 interface IDataTableProps {
   data: any;
-  index: number;
 }
 
-export const DataTable = ({ data, index }: IDataTableProps) => {
+export const DataTable = ({ data }: IDataTableProps) => {
   return (
     <table
       style={{
@@ -39,7 +38,7 @@ export const DataTable = ({ data, index }: IDataTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {data[index].map((data: any) => (
+        {data.map((data: any) => (
           <tr key={data.id}>
             <td
               style={{

@@ -1,33 +1,21 @@
 import { useState } from "react";
 
 import { DataTable, Paginator } from "../../components";
-import { useFetch } from "./useFetch";
 import { useTodos } from "./hooks";
 import { Todo } from "./interfaces/todo.interface";
 
 export const Todos = () => {
-  const [paginationIndex, setPaginationIndex] = useState(0);
-  const [pageRange, setPageRange] = useState(0);
-  const [pageTotal, setPageTotal] = useState(0);
   const [searchQuery, setSearchQuery] = useState({
     query: "",
     type: "search",
   });
-  const { error, isLoading, data } = useFetch(
-    `https://jsonplaceholder.typicode.com/todos`
-  );
-  const { todos, totalTodos } = useTodos(
-    data,
-    searchQuery.query,
-    searchQuery.type
-  );
-  const chunkSize = 20;
+  const { error, isLoading, todos, totalTodos } = useTodos();
 
   if (error) {
     return <h3>{error}</h3>;
   }
 
-  if (isLoading || !todos || !todos.length) {
+  if (isLoading) {
     return <h3>loading...</h3>;
   }
 
@@ -37,18 +25,6 @@ export const Todos = () => {
 
   const handleFilterChange = (e: any) => {
     setSearchQuery({ query: e.target.value, type: "filter" });
-  };
-
-  const handlePagination = (direction: string) => {
-    if (direction === "previous") {
-      setPaginationIndex(paginationIndex - 1);
-      setPageRange(pageRange - chunkSize);
-      setPageTotal(pageRange - todos[paginationIndex].length);
-    } else {
-      setPaginationIndex(paginationIndex + 1);
-      setPageRange(pageRange + chunkSize);
-      setPageTotal(pageRange + todos[paginationIndex].length);
-    }
   };
 
   return (
@@ -69,15 +45,8 @@ export const Todos = () => {
           <option value="false">False</option>
         </select>
       </div>
-      <DataTable data={todos} index={paginationIndex} />
-      <Paginator
-        index={paginationIndex}
-        maxIndex={todos.length - 1}
-        pageRange={pageRange}
-        pageTotal={pageTotal}
-        total={totalTodos}
-        onClick={handlePagination}
-      />
+      <DataTable data={todos} />
+      <Paginator data={todos} pageSize={20} />
     </div>
   );
 };

@@ -1,42 +1,33 @@
+import { usePagination } from "../hooks";
+
 interface IPaginatorProps {
-  index: number;
-  maxIndex: number;
-  pageRange: number;
-  pageTotal: number;
-  total: number;
-  onClick: (direction: string) => void;
+  data: any;
+  pageSize: number;
 }
 
-export const Paginator = ({
-  index,
-  maxIndex,
-  pageRange,
-  pageTotal,
-  total,
-  onClick,
-}: IPaginatorProps) => {
+export const Paginator = ({ data, pageSize }: IPaginatorProps) => {
+  const { next, prev, jump, currentPage, maxPage, currentData } = usePagination(
+    data,
+    pageSize
+  );
+
   const onPaginationPress = (e: any, direction: string) => {
-    onClick(direction);
+    // onClick(direction);
   };
 
   return (
     <div style={{ display: "flex", marginBottom: "20px" }}>
       <span style={{ marginLeft: "auto", marginRight: "10px" }}>
-        {pageRange}-{pageTotal} of {total}
+        {/* {currentPage}-{pageTotal} of {total} */}
+        20-20 of 5000
       </span>
       <button
-        disabled={index === 0}
         onClick={(e) => onPaginationPress(e, "previous")}
         style={{ marginRight: "10px" }}
       >
         &larr;
       </button>
-      <button
-        disabled={index === maxIndex}
-        onClick={(e) => onPaginationPress(e, "next")}
-      >
-        &rarr;
-      </button>
+      <button onClick={(e) => onPaginationPress(e, "next")}>&rarr;</button>
     </div>
   );
 };

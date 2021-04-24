@@ -1,20 +1,27 @@
 import { useReducer, useEffect } from "react";
 
+import { useFetch, usePagination } from "../../../hooks";
 import { Todo } from "../interfaces/todo.interface";
 import { chunkTodos, filterTodos, searchTodos } from "../utils";
 
 const ACTIONS = {
   filterTodos: "FILTER_TODOS",
   searchTodos: "SEARCH_TODOS",
-  returnTodos: "RETURN_TODOS"
+  returnTodos: "RETURN_TODOS",
+  todosLoading: "TODOS_LOADING",
+  todosError: "TODOS_ERROR"
 };
 
 export interface TodosState {
+  error: string;
+  isLoading: boolean;
   todos: Todo[];
   totalTodos: number;
 };
 
 const createInitialState = () => ({
+  error: undefined,
+  isLoading: true,
   todos: [],
   totalTodos: 0
 });
@@ -29,47 +36,45 @@ const todosReducer = (state: any, action: { type: string; payload: any; }) => {
       return { ...state, ...payload };
     case ACTIONS.returnTodos:
       return { ...state, ...payload };
+    case ACTIONS.todosLoading:
+      return { ...state, ...payload };
+    case ACTIONS.todosError:
+      return { ...state, ...payload }
     default:
       throw new Error("Not recognized action type in todosReducer! Typo?");
   }
 };
 
-export const useTodos = (todos: Todo[], query: any, type: string) => {
+export const useTodos = () => {
   const [state, dispatch] = useReducer(
     todosReducer,
     createInitialState()
   );
+  const { error, isLoading, data } = useFetch(
+    `https://jsonplaceholder.typicode.com/todos`
+  );
 
   useEffect(() => {
-    if (!todos) {
-      return;
+    if (error) {
+      return dispatch({
+        type: ACTIONS.todosError,
+        payload: { error: error }
+      });
+    }
+  
+    if (isLoading) {
+      return dispatch({
+        type: ACTIONS.todosLoading,
+        payload: { isLoading: isLoading }
+      });
     }
 
-    switch (type) {
-      case "search":
-        const searchedTodos = searchTodos(todos, query);
+    return dispatch({
+      type: ACTIONS.returnTodos,
+      payload: { todos: data, isLoading: false }
+    });
 
-        return dispatch({
-          type: ACTIONS.searchTodos,
-          payload: { todos: chunkTodos(searchedTodos), totalTodos: searchedTodos.length }
-        });
-
-      case "filter":
-        const cleanQuery = query === "true" ? true : false;
-        const filteredTodos = filterTodos(todos, cleanQuery);
-
-        return dispatch({
-          type: ACTIONS.filterTodos,
-          payload: { todos: chunkTodos(filteredTodos), totalTodos: filteredTodos.length }
-        });
-
-      default:
-        return dispatch({
-          type: ACTIONS.returnTodos,
-          payload: { todos: chunkTodos(todos) }
-        })
-      }
-  }, [todos, query, type]);
+  }, [error, isLoading, data]);
   
   return state;
 };
