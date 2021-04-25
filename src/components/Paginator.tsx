@@ -6,10 +6,10 @@ interface IPaginatorProps {
 }
 
 export const Paginator = ({ data, pageSize }: IPaginatorProps) => {
-  const { next, prev, jump, currentPage, maxPage, currentData } = usePagination(
-    data,
-    pageSize
-  );
+  // const { next, prev, jump, currentPage, maxPage, currentData } = usePagination(
+  //   data,
+  //   pageSize
+  // );
 
   const onPaginationPress = (e: any, direction: string) => {
     // onClick(direction);

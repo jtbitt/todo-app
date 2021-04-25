@@ -1,13 +1,12 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useState } from "react";
 
 import { useFetch, usePagination } from "../../../hooks";
 import { Todo } from "../interfaces/todo.interface";
 import { chunkTodos, filterTodos, searchTodos } from "../utils";
 
 const ACTIONS = {
-  filterTodos: "FILTER_TODOS",
-  searchTodos: "SEARCH_TODOS",
   returnTodos: "RETURN_TODOS",
+  updateTodos: "UPDATE_TODOS",
   todosLoading: "TODOS_LOADING",
   todosError: "TODOS_ERROR"
 };
@@ -16,6 +15,7 @@ export interface TodosState {
   error: string;
   isLoading: boolean;
   todos: Todo[];
+  filteredTodos: Todo[];
   totalTodos: number;
 };
 
@@ -23,6 +23,7 @@ const createInitialState = () => ({
   error: undefined,
   isLoading: true,
   todos: [],
+  filteredTodos: [],
   totalTodos: 0
 });
 
@@ -30,12 +31,10 @@ const todosReducer = (state: any, action: { type: string; payload: any; }) => {
   const { type, payload } = action;
 
   switch (type) {
-    case ACTIONS.searchTodos:
-      return { ...state, ...payload };
-    case ACTIONS.filterTodos:
-      return { ...state, ...payload };
     case ACTIONS.returnTodos:
       return { ...state, ...payload };
+    case ACTIONS.updateTodos:
+        return { ...state, ...payload };
     case ACTIONS.todosLoading:
       return { ...state, ...payload };
     case ACTIONS.todosError:
@@ -53,6 +52,14 @@ export const useTodos = () => {
   const { error, isLoading, data } = useFetch(
     `https://jsonplaceholder.typicode.com/todos`
   );
+
+  const setFilteredTodos = (e: any) => {
+    console.log(e);
+    return dispatch({
+      type: ACTIONS.updateTodos,
+      payload: { filteredTodos: e }
+    });
+  }
 
   useEffect(() => {
     if (error) {
@@ -73,8 +80,7 @@ export const useTodos = () => {
       type: ACTIONS.returnTodos,
       payload: { todos: data, isLoading: false }
     });
-
-  }, [error, isLoading, data]);
+  }, [data]);
   
-  return state;
+  return { ...state, setFilteredTodos };
 };
