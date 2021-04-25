@@ -1,9 +1,5 @@
-import { useState } from "react";
-
 import { DataTable, Paginator, Filter } from "../../components";
-import { useTodos, useFilters } from "./hooks";
-import { usePagination } from "../../hooks";
-import { Todo } from "./interfaces/todo.interface";
+import { useTodos } from "./hooks";
 
 export const Todos = () => {
   const {
@@ -11,9 +7,10 @@ export const Todos = () => {
     isLoading,
     todos,
     filteredTodos,
+    paginatedTodos,
     setFilteredTodos,
+    setPaginatedTodos,
   } = useTodos();
-  // const pagination = usePagination(todos, 20);
 
   if (error) {
     return <h3>{error}</h3>;
@@ -27,8 +24,12 @@ export const Todos = () => {
     <div style={{ marginLeft: "5%", marginRight: "5%" }}>
       <h3>Todos</h3>
       <Filter data={todos} onFilter={setFilteredTodos} />
-      <DataTable data={filteredTodos} />
-      <Paginator data={filteredTodos} pageSize={20} />
+      <DataTable data={paginatedTodos} />
+      <Paginator
+        data={filteredTodos}
+        pageSize={20}
+        onPageChange={setPaginatedTodos}
+      />
     </div>
   );
 };

@@ -16,7 +16,7 @@ export interface TodosState {
   isLoading: boolean;
   todos: Todo[];
   filteredTodos: Todo[];
-  totalTodos: number;
+  paginatedTodos: Todo[];
 };
 
 const createInitialState = () => ({
@@ -24,7 +24,7 @@ const createInitialState = () => ({
   isLoading: true,
   todos: [],
   filteredTodos: [],
-  totalTodos: 0
+  paginatedTodos: []
 });
 
 const todosReducer = (state: any, action: { type: string; payload: any; }) => {
@@ -54,10 +54,16 @@ export const useTodos = () => {
   );
 
   const setFilteredTodos = (e: any) => {
-    console.log(e);
     return dispatch({
       type: ACTIONS.updateTodos,
       payload: { filteredTodos: e }
+    });
+  }
+
+  const setPaginatedTodos = (e: any) => {
+    return dispatch({
+      type: ACTIONS.updateTodos,
+      payload: { paginatedTodos: e }
     });
   }
 
@@ -78,9 +84,9 @@ export const useTodos = () => {
 
     return dispatch({
       type: ACTIONS.returnTodos,
-      payload: { todos: data, isLoading: false }
+      payload: { todos: data, filteredTodos: data, isLoading: false }
     });
   }, [data]);
   
-  return { ...state, setFilteredTodos };
+  return { ...state, setFilteredTodos, setPaginatedTodos };
 };
