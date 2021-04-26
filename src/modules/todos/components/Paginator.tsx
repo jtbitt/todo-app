@@ -23,6 +23,8 @@ export const Paginator = ({
     currentPage,
     maxPage,
   } = usePagination(data, pageSize);
+  const mq = window.innerWidth;
+  console.log(mq);
 
   useEffect(() => {
     currentData();

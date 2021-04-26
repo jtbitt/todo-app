@@ -4,7 +4,7 @@ import {searchTodos, filterTodos} from "../utils";
 
 export const useFilters = (data: any) => {
   const [currentQuery, setCurrentQuery] = useState("");
-  const [currentFilter, setCurrentFilter] = useState<boolean>();
+  const [currentFilter, setCurrentFilter] = useState("");
   const [filteredTodos, setFilteredTodos] = useState(data);
 
   const setQuery = (e: any) => {

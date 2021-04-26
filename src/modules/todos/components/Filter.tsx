@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import { useFilters } from "../hooks";
 import { Todo } from "../interfaces/todo.interface";
+import "../css/Todos.css";
 
 interface IFilterProps {
   data: Todo[];
@@ -16,32 +17,17 @@ export const Filter = ({ data, onFilter }: IFilterProps) => {
   }, [filteredTodos]);
 
   return (
-    <div style={styles.container}>
+    <div className="filter-container">
       <input
         placeholder="Search todos..."
         onChange={setQuery}
-        style={styles.search}
+        className="search"
       />
-      <select onChange={setFilter} style={styles.filter}>
+      <select onChange={setFilter} className="filter">
         <option value="all">All</option>
         <option value="true">True</option>
         <option value="false">False</option>
       </select>
     </div>
   );
-};
-
-export const styles = {
-  container: {
-    display: "flex",
-  },
-  search: {
-    padding: "10px",
-    width: "48%",
-    marginRight: "auto",
-  },
-  filter: {
-    padding: "10px",
-    width: "48%",
-  },
 };

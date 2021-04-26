@@ -1,0 +1,35 @@
+.filter-container {
+  display: flex;
+  margin-bottom: 20px;
+  align-content: space-between;
+}
+
+.search {
+  height: 40px;
+  margin-right: auto;
+}
+
+.search,
+.filter {
+  width: 48%;
+}
+
+@media only screen and (max-width: 768px) {
+  .filter-container {
+    flex-direction: column;
+  }
+
+  .search {
+    margin-right: 0;
+  }
+
+  .filter {
+    margin-top: 10px;
+  }
+
+  .search,
+  .filter {
+    width: auto;
+    height: 40px;
+  }
+}
