@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 
 import { useFilters } from "../hooks";
+import { Todo } from "../interfaces/todo.interface";
 
 interface IFilterProps {
-  data: any;
-  onFilter: ([]: any[]) => void;
+  data: Todo[];
+  onFilter: (todos: Todo[]) => void;
 }
 
 export const Filter = ({ data, onFilter }: IFilterProps) => {
@@ -22,7 +23,7 @@ export const Filter = ({ data, onFilter }: IFilterProps) => {
         style={styles.search}
       />
       <select onChange={setFilter} style={styles.filter}>
-        <option></option>
+        <option value="all">All</option>
         <option value="true">True</option>
         <option value="false">False</option>
       </select>

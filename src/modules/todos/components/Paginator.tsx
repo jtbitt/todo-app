@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 
 import { usePagination } from "../hooks";
+import { Todo } from "../interfaces/todo.interface";
 
 interface IPaginatorProps {
-  data: any;
+  data: Todo[];
   pageSize: number;
-  onPageChange: ({}: any) => void;
+  onPageChange: (todos: Todo[]) => void;
 }
 
 export const Paginator = ({
@@ -19,6 +20,8 @@ export const Paginator = ({
     currentData,
     paginatedData,
     currentIndex,
+    currentPage,
+    maxPage,
   } = usePagination(data, pageSize);
 
   useEffect(() => {
@@ -42,7 +45,9 @@ export const Paginator = ({
       >
         &larr;
       </button>
-      <button onClick={(e) => next()}>&rarr;</button>
+      <button disabled={currentPage === maxPage} onClick={(e) => next()}>
+        &rarr;
+      </button>
     </div>
   );
 };

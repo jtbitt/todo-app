@@ -15,10 +15,9 @@ export const useFilters = (data: any) => {
   };
 
   const setFilter = (e: any) => {
-    const cleanQuery = e.target.value === "true" ? true : false;
     const searchedTodos = searchTodos(data, currentQuery);
-    const currentTodos = filterTodos(searchedTodos, cleanQuery);
-    setCurrentFilter(cleanQuery);
+    const currentTodos = filterTodos(searchedTodos, e.target.value);
+    setCurrentFilter(e.target.value);
     setFilteredTodos(currentTodos);
   };
 

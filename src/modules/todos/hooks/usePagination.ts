@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { paginateTodos } from "../utils";
+
 export const usePagination = (data: any, itemsPerPage: number) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState(data);
@@ -23,7 +25,7 @@ export const usePagination = (data: any, itemsPerPage: number) => {
   const currentData = () => {
     const begin = (currentPage - 1) * itemsPerPage;
     const end = begin + itemsPerPage;
-    const newData = data.slice(begin, end);
+    const newData = paginateTodos(data, begin, end);
     setPaginatedData(newData);
   }
 
