@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { useFilters } from "../modules/todos/hooks";
+import { useFilters } from "../hooks";
 
 interface IFilterProps {
   data: any;
@@ -15,17 +15,32 @@ export const Filter = ({ data, onFilter }: IFilterProps) => {
   }, [filteredTodos]);
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={styles.container}>
       <input
         placeholder="Search todos..."
         onChange={setQuery}
-        style={{ padding: "10px", width: "48%", marginRight: "auto" }}
+        style={styles.search}
       />
-      <select onChange={setFilter} style={{ padding: "10px", width: "48%" }}>
+      <select onChange={setFilter} style={styles.filter}>
         <option></option>
         <option value="true">True</option>
         <option value="false">False</option>
       </select>
     </div>
   );
+};
+
+export const styles = {
+  container: {
+    display: "flex",
+  },
+  search: {
+    padding: "10px",
+    width: "48%",
+    marginRight: "auto",
+  },
+  filter: {
+    padding: "10px",
+    width: "48%",
+  },
 };

@@ -1,5 +1,5 @@
-import { DataTable, Paginator, Filter } from "../../components";
-import { useTodos } from "./hooks";
+import { DataTable, Paginator, Filter } from "../components";
+import { useTodos } from "../hooks";
 
 export const Todos = () => {
   const {
@@ -21,7 +21,7 @@ export const Todos = () => {
   }
 
   return (
-    <div style={{ marginLeft: "5%", marginRight: "5%" }}>
+    <div style={styles.container}>
       <h3>Todos</h3>
       <Filter data={todos} onFilter={setFilteredTodos} />
       <DataTable data={paginatedTodos} />
@@ -32,4 +32,10 @@ export const Todos = () => {
       />
     </div>
   );
+};
+
+export const styles = {
+  container: {
+    margin: "0 5%",
+  },
 };

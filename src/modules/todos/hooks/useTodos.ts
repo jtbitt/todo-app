@@ -1,8 +1,7 @@
-import { useReducer, useEffect, useState } from "react";
+import { useReducer, useEffect } from "react";
 
-import { useFetch, usePagination } from "../../../hooks";
+import { useFetch } from "../../../api";
 import { Todo } from "../interfaces/todo.interface";
-import { chunkTodos, filterTodos, searchTodos } from "../utils";
 
 const ACTIONS = {
   returnTodos: "RETURN_TODOS",
@@ -53,17 +52,17 @@ export const useTodos = () => {
     `https://jsonplaceholder.typicode.com/todos`
   );
 
-  const setFilteredTodos = (e: any) => {
+  const setFilteredTodos = (todos: Todo[]) => {
     return dispatch({
       type: ACTIONS.updateTodos,
-      payload: { filteredTodos: e }
+      payload: { filteredTodos: todos }
     });
   }
 
-  const setPaginatedTodos = (e: any) => {
+  const setPaginatedTodos = (todos: Todo[]) => {
     return dispatch({
       type: ACTIONS.updateTodos,
-      payload: { paginatedTodos: e }
+      payload: { paginatedTodos: todos }
     });
   }
 
