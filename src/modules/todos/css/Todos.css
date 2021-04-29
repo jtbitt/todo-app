@@ -22,15 +22,16 @@
 
   .search {
     margin-right: 0;
+    height: 40px;
   }
 
   .filter {
     margin-top: 10px;
+    height: 45px;
   }
 
   .search,
   .filter {
     width: auto;
-    height: 40px;
   }
 }
