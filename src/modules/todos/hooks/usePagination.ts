@@ -29,6 +29,6 @@ export const usePagination = (data: any, itemsPerPage: number) => {
     setPaginatedData(newData);
   }
 
-  return { next, prev, currentData, paginatedData, currentIndex, currentPage, maxPage };
+  return { next, prev, currentData, setCurrentPage, setCurrentIndex, paginatedData, currentIndex, currentPage, maxPage };
 
 };

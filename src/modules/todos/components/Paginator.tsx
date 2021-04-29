@@ -18,17 +18,23 @@ export const Paginator = ({
     next,
     prev,
     currentData,
+    setCurrentPage,
+    setCurrentIndex,
     paginatedData,
     currentIndex,
     currentPage,
     maxPage,
   } = usePagination(data, pageSize);
-  const mq = window.innerWidth;
-  console.log(mq);
 
   useEffect(() => {
     currentData();
+    setCurrentPage(1);
+    setCurrentIndex(1);
   }, [data]);
+
+  useEffect(() => {
+    currentData();
+  }, [currentPage]);
 
   useEffect(() => {
     onPageChange(paginatedData);

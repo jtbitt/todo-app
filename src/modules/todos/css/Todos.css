@@ -12,6 +12,7 @@
 .search,
 .filter {
   width: 48%;
+  padding: 0 10px;
 }
 
 @media only screen and (max-width: 768px) {
