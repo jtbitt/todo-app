@@ -1,8 +1,9 @@
 import { useState } from "react";
 
 import { paginateTodos } from "../utils";
+import { ITodo } from "../interfaces/todo.interface";
 
-export const usePagination = (data: any, itemsPerPage: number) => {
+export const usePagination = (data: ITodo[], itemsPerPage: number) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState(data);
   const [currentIndex, setCurrentIndex] = useState(1);
