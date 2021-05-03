@@ -11,7 +11,7 @@ type TAction<T> =
   | { type: "FETCH_SUCCESS"; payload: T }
   | { type: "FETCH_ERROR"; }
 
-export const useFetch = <T>(endpoint: RequestInfo, config?: any) => {
+export const useFetch = <T>(endpoint: RequestInfo, config: RequestInit = {}) => {
   const initialState: FetchState<T> = {
     isError: false,
     isLoading: true,
