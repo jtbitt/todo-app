@@ -1,43 +1,39 @@
 import { useReducer, useEffect } from "react";
 
-const ACTIONS = {
-  fetchPending: "FETCH_PENDING",
-  fetchSuccess: "FETCH_SUCCESS",
-  fetchError: "FETCH_ERROR"
-};
-
-export interface FetchState {
-  error: string;
+export interface FetchState<T> {
+  isError?: boolean;
   isLoading: boolean;
-  data: {}[];
+  data?: T;
 };
 
-const createInitialState = (initialState: {}) => ({
-  error: undefined,
-  isLoading: true,
-  data: undefined,
-  ...initialState
-});
+type TAction<T> =
+  | { type: "FETCH_PENDING" }
+  | { type: "FETCH_SUCCESS"; payload: T }
+  | { type: "FETCH_ERROR"; }
 
-const fetchReducer = (state: FetchState, action: { type: string; payload: any; }) => {
-  const { type, payload } = action;
+export const useFetch = <T>(endpoint: RequestInfo, config?: any) => {
+  const initialState: FetchState<T> = {
+    isError: false,
+    isLoading: true,
+    data: undefined
+  };
 
-  switch (type) {
-    case ACTIONS.fetchPending:
-      return { ...state, isLoading: true, error: undefined };
-    case ACTIONS.fetchSuccess:
-      return { ...state, ...payload, isLoading: false };
-    case ACTIONS.fetchError:
-      return { ...state, ...payload, isLoading: false };
-    default:
-      throw new Error("Not recognized action type in fetchReducer! Typo?");
-  }
-};
-
-export const useFetch = (endpoint: RequestInfo, initialState = {}, config = {}) => {
+  const fetchReducer = (state: FetchState<T>, action: TAction<T>): FetchState<T> => {
+    switch (action.type) {
+      case "FETCH_PENDING":
+        return { ...state, isLoading: true, isError: false };
+      case "FETCH_SUCCESS":
+        return { ...state, isLoading: false, data: action.payload };
+      case "FETCH_ERROR":
+        return { ...state, isLoading: false, isError: true };
+      default:
+        throw new Error("Not recognized action type in fetchReducer! Typo?");
+    }
+  };
+  
   const [state, dispatch] = useReducer(
     fetchReducer,
-    createInitialState(initialState)
+    initialState
   );
 
   useEffect(() => {
@@ -46,26 +42,22 @@ export const useFetch = (endpoint: RequestInfo, initialState = {}, config = {}) 
     }
 
     const fetchData = async () => {
-      dispatch({ type: ACTIONS.fetchPending, payload: {} });
+      dispatch({ type: "FETCH_PENDING" });
 
       try {
         const response = await fetch(endpoint, config);
 
         if (!response.ok) {
-          return dispatch({
-            type: ACTIONS.fetchError,
-            payload: { error: response.statusText }
-          });
+          dispatch({ type: "FETCH_ERROR" });
+          throw new Error(response.statusText);
         }
 
         const data = await response.json();
 
-        dispatch({ type: ACTIONS.fetchSuccess, payload: { data } });
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (e) {
-        dispatch({
-          type: ACTIONS.fetchError,
-          payload: { error: e.message || "Something went wrong" }
-        });
+        dispatch({ type: "FETCH_ERROR" });
+        throw new Error(e.message);
       }
     };
 

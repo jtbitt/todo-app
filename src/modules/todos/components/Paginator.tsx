@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
 import { usePagination } from "../hooks";
-import { Todo } from "../interfaces/todo.interface";
+import { ITodo } from "../interfaces/todo.interface";
 
 interface IPaginatorProps {
-  data: Todo[];
+  data: ITodo[];
   pageSize: number;
-  onPageChange: (todos: Todo[]) => void;
+  onPageChange: (todos: ITodo[]) => void;
 }
 
 export const Paginator = ({

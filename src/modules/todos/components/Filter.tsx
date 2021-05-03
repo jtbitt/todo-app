@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
 import { useFilters } from "../hooks";
-import { Todo } from "../interfaces/todo.interface";
+import { ITodo } from "../interfaces/todo.interface";
 import "../css/Todos.css";
 
 interface IFilterProps {
-  data: Todo[];
-  onFilter: (todos: Todo[]) => void;
+  data: ITodo[];
+  onFilter: (todos: ITodo[]) => void;
 }
 
 export const Filter = ({ data, onFilter }: IFilterProps) => {

@@ -1,43 +1,43 @@
 import { useReducer, useEffect } from "react";
 
 import { useFetch } from "../../../api";
-import { Todo } from "../interfaces/todo.interface";
+import { ITodo } from "../interfaces/todo.interface";
 
-const ACTIONS = {
-  returnTodos: "RETURN_TODOS",
-  updateTodos: "UPDATE_TODOS",
-  todosLoading: "TODOS_LOADING",
-  todosError: "TODOS_ERROR"
-};
+type TAction =
+  | { type: "TODOS_LOADING" }
+  | { type: "RETURN_TODOS"; payload: ITodo[] }
+  | { type: "PAGINATE_TODOS"; payload: ITodo[] }
+  | { type: "FILTER_TODOS"; payload: ITodo[] }
+  | { type: "TODOS_ERROR"; }
 
 export interface TodosState {
-  error: string;
+  isError: boolean;
   isLoading: boolean;
-  todos: Todo[];
-  filteredTodos: Todo[];
-  paginatedTodos: Todo[];
+  todos: ITodo[];
+  filteredTodos: ITodo[];
+  paginatedTodos: ITodo[];
 };
 
-const createInitialState = () => ({
-  error: undefined,
+const initialState = {
+  isError: false,
   isLoading: true,
   todos: [],
   filteredTodos: [],
   paginatedTodos: []
-});
+};
 
-const todosReducer = (state: any, action: { type: string; payload: any; }) => {
-  const { type, payload } = action;
-
-  switch (type) {
-    case ACTIONS.returnTodos:
-      return { ...state, ...payload };
-    case ACTIONS.updateTodos:
-        return { ...state, ...payload };
-    case ACTIONS.todosLoading:
-      return { ...state, ...payload };
-    case ACTIONS.todosError:
-      return { ...state, ...payload }
+const todosReducer = (state: TodosState, action: TAction): TodosState => {
+  switch (action.type) {
+    case "TODOS_LOADING":
+      return { ...state, isLoading: true, isError: false };
+    case "RETURN_TODOS":
+      return { ...state, isLoading: false, todos: action.payload };
+    case "PAGINATE_TODOS":
+      return { ...state, isLoading: false, paginatedTodos: action.payload };
+    case "FILTER_TODOS":
+      return { ...state, isLoading: false, filteredTodos: action.payload };
+    case "TODOS_ERROR":
+      return { ...state, isError: true }
     default:
       throw new Error("Not recognized action type in todosReducer! Typo?");
   }
@@ -46,46 +46,33 @@ const todosReducer = (state: any, action: { type: string; payload: any; }) => {
 export const useTodos = () => {
   const [state, dispatch] = useReducer(
     todosReducer,
-    createInitialState()
+    initialState
   );
-  const { error, isLoading, data } = useFetch(
+  const { isError, isLoading, data } = useFetch<ITodo[]>(
     `https://jsonplaceholder.typicode.com/todos`
   );
 
-  const setFilteredTodos = (todos: Todo[]) => {
-    return dispatch({
-      type: ACTIONS.updateTodos,
-      payload: { filteredTodos: todos }
-    });
+  const setFilteredTodos = (todos: ITodo[]) => {
+    return dispatch({ type: "FILTER_TODOS", payload: todos });
   }
 
-  const setPaginatedTodos = (todos: Todo[]) => {
-    return dispatch({
-      type: ACTIONS.updateTodos,
-      payload: { paginatedTodos: todos }
-    });
+  const setPaginatedTodos = (todos: ITodo[]) => {
+    return dispatch({ type: "PAGINATE_TODOS", payload: todos });
   }
 
   useEffect(() => {
-    if (error) {
-      return dispatch({
-        type: ACTIONS.todosError,
-        payload: { error: error }
-      });
+    if (isError) {
+      return dispatch({ type: "TODOS_ERROR" });
     }
   
     if (isLoading) {
-      return dispatch({
-        type: ACTIONS.todosLoading,
-        payload: { isLoading: isLoading }
-      });
+      return dispatch({ type: "TODOS_LOADING" });
     }
-
-    return dispatch({
-      type: ACTIONS.returnTodos,
-      payload: { todos: data, filteredTodos: data, isLoading: false }
-    });
-  }, [data]);
+    
+    if (data) {
+      return dispatch({ type: "RETURN_TODOS", payload: data });
+    }
+  }, [isError, isLoading, data]);
   
   return { ...state, setFilteredTodos, setPaginatedTodos };
 };

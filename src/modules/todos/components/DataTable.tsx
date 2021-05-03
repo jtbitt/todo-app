@@ -1,7 +1,7 @@
-import { Todo } from "../interfaces/todo.interface";
+import { ITodo } from "../interfaces/todo.interface";
 
 interface IDataTableProps {
-  data: Todo[];
+  data: ITodo[];
 }
 
 export const DataTable = ({ data }: IDataTableProps) => {

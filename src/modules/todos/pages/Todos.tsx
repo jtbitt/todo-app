@@ -3,7 +3,7 @@ import { useTodos } from "../hooks";
 
 export const Todos = () => {
   const {
-    error,
+    isError,
     isLoading,
     todos,
     filteredTodos,
@@ -12,8 +12,8 @@ export const Todos = () => {
     setPaginatedTodos,
   } = useTodos();
 
-  if (error) {
-    return <h3>{error}</h3>;
+  if (isError) {
+    return <h3>There is an error</h3>;
   }
 
   if (isLoading) {
