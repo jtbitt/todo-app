@@ -4,6 +4,10 @@ This project is a demo boilerplate task.
 
 ## Structure
 
+- /public -> static assets, index.html only
+- /src/api -> Communication with Todos DB
+- /src/modules -> Feature like architecture, todos module
+
 ## Installation
 
 Code challenge is based on yarn as a package manager.
