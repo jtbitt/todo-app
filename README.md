@@ -1,6 +1,6 @@
 # todo-app
 
-This project is a demo boilerplate task.
+This project is a demo coding challenge.
 
 ## Structure
 
