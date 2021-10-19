@@ -62,7 +62,7 @@ export const useFetch = <T>(endpoint: RequestInfo, config: RequestInit = {}) => 
     };
 
     fetchData();
-  }, []);
+  }, [config, endpoint]);
   
   return state;
 };

@@ -30,15 +30,15 @@ export const Paginator = ({
     currentData();
     setCurrentPage(1);
     setCurrentIndex(1);
-  }, [data]);
+  }, [data, currentData, setCurrentIndex, setCurrentPage]);
 
   useEffect(() => {
     currentData();
-  }, [currentPage]);
+  }, [currentPage, currentData]);
 
   useEffect(() => {
     onPageChange(paginatedData);
-  }, [paginatedData]);
+  }, [paginatedData, onPageChange]);
 
   return (
     <div style={styles.container}>
