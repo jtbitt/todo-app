@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent } from 'react';
 
 import { searchTodos, filterTodos } from "../utils";
 import { ITodo } from "../interfaces/todo.interface";
