@@ -1,6 +1,6 @@
 {
-  "homepage": "https://jtbitt.github.io/todo-app/",
   "name": "todos",
+  "homepage": "https://jtbitt.github.io/todo-app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
