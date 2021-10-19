@@ -1,0 +1,2 @@
+.filter-container{display:flex;margin-bottom:20px;align-content:space-between}.search{height:40px;margin-right:auto}.filter,.search{width:48%;padding:0 10px}@media only screen and (max-width:768px){.filter-container{flex-direction:column}.search{margin-right:0;height:40px}.filter{margin-top:10px;height:45px}.filter,.search{width:auto}}
+/*# sourceMappingURL=3.e2e714ac.chunk.css.map */
