@@ -1,6 +1,7 @@
 {
   "name": "todos",
   "version": "0.1.0",
+  "homepage": "https://jtbitt.github.io/todo-app/",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.3",
