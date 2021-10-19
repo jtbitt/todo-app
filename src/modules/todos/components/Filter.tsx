@@ -14,7 +14,7 @@ export const Filter = ({ data, onFilter }: IFilterProps) => {
 
   useEffect(() => {
     onFilter(filteredTodos);
-  }, [onFilter, filteredTodos]);
+  }, [filteredTodos]);
 
   return (
     <div className="filter-container">
