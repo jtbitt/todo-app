@@ -1,4 +1,4 @@
-# todo-app
+# todos-create-react-app
 
 This project is a demo coding challenge.
 
