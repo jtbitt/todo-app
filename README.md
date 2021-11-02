@@ -1,6 +1,6 @@
 # todos-create-react-app
 
-This project is a demo coding challenge.
+This project is a demo coding challenge using create-react-app.
 
 ## Structure
 
