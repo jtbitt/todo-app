@@ -14,7 +14,7 @@ Code challenge is based on yarn as a package manager.
 To install node_modules, simply run the below command.
 
 ```
-yarn
+yarn install
 ```
 
 ## Development
